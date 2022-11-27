@@ -4,14 +4,21 @@
 
 using namespace std;
 
-ofstream Data("cppstudio.txt");
+ofstream Data("cppstudio.txt"); //створюється файл
 string fileinput;
 
-void write(double y) {
+void checkValidInput() {				//перевірка на вхідні дані
+    if (cin.fail()) {
+        cout << endl;
+        throw "Помилка вводу!";
+    }
+}
+
+void write(double y) {  //функція виводить значення
     cout << "y = " << y << endl;
 }
 
-void read(double& a, double& b, double& h, double& n) {
+void read(double& a, double& b, double& h, double& n) { //функція приймає дані   
     
     int yes = 1, no = 0;
     cout << "Ввести а: ";
@@ -27,8 +34,9 @@ void read(double& a, double& b, double& h, double& n) {
     cout << endl;
 
 }
+
 double sum, y;
-void solve(double a, double b, double h, double n) {
+void solve(double a, double b, double h, double n) {    //функція робить розрахунок
     if (n <= 0)
     {
         cout << "Помилка введених значень";
@@ -58,7 +66,7 @@ void solve(double a, double b, double h, double n) {
                 }
             }
             write(y);
-            if (fileinput == "yes")
+            if (fileinput == "yes") //записуємо в файл
             {
                 Data << "|x = " << x << "| |" << "n = " << n << "| |" << "y = " << y << "|" << endl;
             }
@@ -66,19 +74,30 @@ void solve(double a, double b, double h, double n) {
 
             }       
         }
-        Data.close();
+        Data.close();   //закриваємо файл
     }
 }
     
-int main() {
+int main() {    //визиваються власне всі функції
 
     setlocale(LC_ALL, "UKRAINIAN");
-    double a, n, b, h;  
+    double a, n, b, h; 
+     try {
+        checkValidInput();
+    }
+    catch (const char* ex) {
+        cout << ex << endl;
+        return 1;
+    }
+    catch (...) {
+        cout << "Невідома помилка" << endl;
+        return -2;
+    }
+    
     read(a, b, h, n);
     cout << "==================" << endl;
     solve(a, b, h, n);
     cout << "==================" << endl;
-   
     return 0;
 
 }
